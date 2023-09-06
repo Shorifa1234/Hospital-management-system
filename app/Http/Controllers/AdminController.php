@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use App\Http\Requests\Auth\LoginRequest;
 
 class AdminController extends Controller
 {
@@ -20,15 +21,27 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+         return view('admin.auth.login');
     }
-
+    public function login(){
+        return view('auth.admin');
+    }
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(AdminLoginRequest $request):RedirectResponse
+    {   
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::guard('admin')->attempt($credentials)) {
+            // Authentication passed
+            return redirect()->route('admin.dashboard'); // Customize the redirect route for Admin
+            // return "adminDashboard";
+        }
+
+        // Authentication failed
+        return back()->withErrors(['email' => 'Invalid credentials'])->withInput();
     }
 
     /**
@@ -58,8 +71,16 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Admin $admin)
+    public function destroy(Request $request)
     {
-        //
+
+        $request->session()->forget('user_id');
+        Auth::guard('web')->logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
     }
 }
