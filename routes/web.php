@@ -18,9 +18,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/admin',[AdminController::class,'create'])->name('admin.create');
-Route::prefix('admin')->group(function() {
+Route::middleware('guest:admin')->group(function() {
+    Route::get('/admin',[AdminController::class,'create'])->name('admin.create');
+    Route::post('/admin',[AdminController::class,'store'])->name('admin.login');
+});
+Route::middleware('auth:admin')->prefix('admin')->group(function() {
     Route::get('/dashboard',[AdminController::class,'index'])->name('admin.dashboard');
+    Route::post('/logout',[AdminController::class,'destroy'])->name('admin.logout');
 });
 
 Route::get('/dashboard', function () {

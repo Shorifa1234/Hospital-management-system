@@ -6,7 +6,7 @@
             <h4 class="text-3xl text-center font-extrabold">{{ __('Admin Login')}}</h4>
         </div>
     </x-slot>
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('admin.login') }}">
         @csrf
 
         <!-- Email Address -->

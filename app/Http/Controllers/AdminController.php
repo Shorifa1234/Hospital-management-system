@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
+// use App\Models\Admin;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\Auth\AdminLoginRequest;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -74,13 +77,13 @@ class AdminController extends Controller
     public function destroy(Request $request)
     {
 
-        $request->session()->forget('user_id');
-        Auth::guard('web')->logout();
+        $request->session()->forget('admin_id');
+        Auth::guard('admin')->logout();
 
-        $request->session()->invalidate();
+        // $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return redirect('/admin');
     }
 }

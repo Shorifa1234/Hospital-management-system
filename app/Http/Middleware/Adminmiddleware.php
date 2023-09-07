@@ -19,6 +19,7 @@ class Adminmiddleware
         if(Auth::guard('admin')->check()){
             return redirect(RouteServiceProvider::ADMIN);
         }
-        return $next($request);
+        // return $next($request);
+        return redirect('/admin');
     }
 }

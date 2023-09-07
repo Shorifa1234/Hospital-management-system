@@ -40,10 +40,10 @@ class AuthenticatedSessionController extends Controller
         $request->session()->forget('user_id');
         Auth::guard('web')->logout();
 
-        $request->session()->invalidate();
+        // $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/admin');
+        return redirect('/login');
     }
 }
